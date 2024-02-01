@@ -1,0 +1,12 @@
+factorial_recursive<-function(n){
+  if (n==0||n==1){
+    return(1)
+  }else{
+    return(n*factorial_recursive(n-1))
+  }
+}
+input_number<-5
+result<-factorial_recursive(input_number)
+cat("factorial of",input_number,"is:",result,"\n")
+
+
