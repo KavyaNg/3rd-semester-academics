@@ -1,0 +1,13 @@
+boxplot(mpg ~ reorder(gear, mpg, median), data = mtcars,
+        xlab = "number of gears",ylab = "miles per galion",
+        main = "car mileage",varwidth = TRUE,
+        col = c("pink","black","orange"), names = c("low", "medium", "high"))
+ggplot(mtcars, aes(reorder(gear, mpg, median), mpg)) + geom_boxplot()
+x <- matrix(c(1000, 900, 1500, 4400, 800 ,2100, 1700, 2900, 3800),
+            years <- c("2011", "2012" "2013")
+            city <- c("chennai","mumbai","kolkata")
+            color <-c("red","green","white")
+            barplot(x, main = "yearly sales", names.arg = years, xlab = "years",
+                    ylab = "sales",col = color)
+                    legend("topleft", city, cex = 0.8, fill = color)
+            
