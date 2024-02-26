@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for singly linked list
+struct TaskNode {
+    char taskName[50];
+    struct TaskNode* next;
+};
+
+// Function to insert a new task at the beginning of the list
+struct TaskNode* insertTask(struct TaskNode* head, const char* newTaskName) {
+    struct TaskNode* newTask = (struct TaskNode*)malloc(sizeof(struct TaskNode));
+    if (newTask == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1); // Exit with an error code
+    }
+
+    // Copy the task name to the new node
+    snprintf(newTask->taskName, sizeof(newTask->taskName), "%s", newTaskName);
+
+    // Set the next pointer to the current head
+    newTask->next = head;
+
+    // Return the new head of the list
+    return newTask;
+}
+
+// Function to display the list of tasks
+void displayTasks(struct TaskNode* head) {
+    struct TaskNode* current = head;
+
+    printf("Task List:\n");
+    while (current != NULL) {
+        printf("- %s\n", current->taskName);
+        current = current->next;
+    }
+
+    printf("\n");
+}
+
+// Function to free the memory allocated for the linked list
+void freeTasks(struct TaskNode* head) {
+    struct TaskNode* current = head;
+    struct TaskNode* nextTask;
+
+    while (current != NULL) {
+        nextTask = current->next;
+        free(current);
+        current = nextTask;
+    }
+}
+
+int main() {
+    // Initialize an empty task list
+    struct TaskNode* taskList = NULL;
+
+    // Insert tasks
+    taskList = insertTask(taskList, "Complete project report");
+    taskList = insertTask(taskList, "Prepare for meeting");
+    taskList = insertTask(taskList, "Review code changes");
+
+    // Display the task list
+    displayTasks(taskList);
+
+    // Free the memory allocated for the task list
+    freeTasks(taskList);
+
+    return 0;
+}
+[6:43 pm, 13/02/2024] Manasa DS: #include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for singly linked list
+struct TaskNode {
+    char taskName[50];
+    struct TaskNode* next;
+};
+
+// Function to insert a new task at the beginning of the list
+struct TaskNode* insertTask(struct TaskNode* head, const char* newTaskName) {
+    struct TaskNode* newTask = (struct TaskNode*)m
