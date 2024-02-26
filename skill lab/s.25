@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Item {
+    int value;
+    int weight;
+    float ratio; // Added ratio for value-to-weight ratio
+};
+
+// Comparison function for qsort
+int compare(const void *a, const void *b) {
+    return (((struct Item *)b)->ratio - ((struct Item *)a)->ratio);
+}
+
+float fractionalKnapsack(struct Item items[], int n, int capacity) {
+    // Calculate value-to-weight ratio and sort items by ratio
+    for (int i = 0; i < n; i++)
+        items[i].ratio = (float)items[i].value / items[i].weight;
+
+    qsort(items, n, sizeof(items[0]), compare);
+
+    float totalValue = 0.0;
+    int currentWeight = 0;
+
+    // Greedy approach: Select items with the highest ratio until the knapsack is full
+    for (int i = 0; i < n; i++) {
+        if (currentWeight + items[i].weight <= capacity) {
+            currentWeight += items[i].weight;
+            totalValue += items[i].value;
+        } else {
+            int remainingWeight = capacity - currentWeight;
+            totalValue += items[i].ratio * remainingWeight;
+            break;
+        }
+    }
+
+    return totalValue;
+}
+
+int main() {
+    struct Item items[] = {{60, 10}, {100, 20}, {120, 30}};
+    int n = sizeof(items) / sizeof(items[0]);
+    int capacity = 50;
+
+    float maxValue = fractionalKnapsack(items, n, capacity);
+
+    printf("Maximum value in Knapsack = %f\n", maxValue);
+
+    return 0;
+
