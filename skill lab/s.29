@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <limits.h>
+#include <string.h>
+#include <stdbool.h>
+
+#define V 6 // Number of vertices in the graph
+
+// Returns the minimum of two values
+int min(int a, int b) {
+    return a < b ? a : b;
+}
+
+// Returns true if there is a path from source 's' to sink 't' in
+// residual graph. Also fills parent[] to store the path
+bool bfs(int rGraph[V][V], int s, int t, int parent[]) {
+    bool visited[V];
+    memset(visited, 0, sizeof(visited));
+
+    // Create a queue for BFS and enqueue the source node
+    int queue[V];
+    int front = 0, rear = 0;
+    queue[rear++] = s;
+    visited[s] = true;
+    parent[s] = -1;
+
+    while (front != rear) {
+        int u = queue[front++];
+
+        for (int v = 0; v < V; v++) {
+            if (!visited[v] && rGraph[u][v] > 0) {
+                // Enqueue the next vertex and mark it visited
+                queue[rear++] = v;
+                parent[v] = u;
+                visited[v] = true;
+            }
+        }
+    }
+
+    // Return true if we reached the sink in BFS starting from source
+    return (visited[t] == true);
+}
+
+// Ford Fulkerson algorithm
+int fordFulkerson(int graph[V][V], int s, int t) {
+    int rGraph[V][V]; // Residual graph where rGraph[i][j] indicates residual capacity of edge from i to j
+
+    // Initialize residual graph as original graph
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+             rGraph[i][j] = graph[i][j];
+
+    int parent[V]; // This array is filled by BFS and to store path
+
+    int maxFlow = 0; // There is no flow initially
+
+    // Augument the flow while tere is path from source to sink
+    while (bfs(rGraph, s, t, parent)) {
+        // Find minimum residual capacity of the edhes along the
+        // path filled by BFS. Or we can say find the maximum flow
+        // through the path found.
+        int pathFlow = INT_MAX;
+        for (int v = t; v != s; v = parent[v]) {
+            int u = parent[v];
+            pathFlow = min(pathFlow, rGraph[u][v]);
+        }
+
+        // update residual capacities of the edges and reverse edges along the path
+        for (int v = t; v != s; v = parent[v]) {
+            int u = parent[v];
+            rGraph[u][v] -= pathFlow;
+            rGraph[v][u] += pathFlow;
+        }
+
+        // Add path flow to overall flow
+        maxFlow += pathFlow;
+    }
+
+    return maxFlow;
+}
+
+int main() {
+    int graph[V][V] = { {0, 16, 13, 0, 0, 0},
+                        {0, 0, 10, 12, 0, 0},
+                        {0, 4, 0, 0, 14, 0},
+                        {0, 0, 9, 0, 0, 20},
+                        {0, 0, 0, 7, 0, 4},
+                        {0, 0, 0, 0, 0, 0} };
+
+    int source = 0, sink = 5;
+    int maxFlow = fordFulkerson(graph, source, sink);
+
+    printf("The maximum possible flow is %d\n", maxFlow);
+
+    return 0;
