@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TABLE_SIZE 10
+
+// Structure to represent a key-value pair
+typedef struct KeyValue {
+    int key;
+    int value;
+    struct KeyValue* next; // Pointer to the next node in case of collision
+} KeyValue;
+
+// Structure to represent the hash table
+typedef struct {
+    KeyValue* table[TABLE_SIZE];
+} HashTable;
+
+// Function to create a new key-value pair
+KeyValue* createKeyValue(int key, int value) {
+    KeyValue* newPair = (KeyValue*)malloc(sizeof(KeyValue));
+    newPair->key = key;
+    newPair->value = value;
+    newPair->next = NULL;
+    return newPair;
+}
+
+// Function to create a new hash table
+HashTable* createHashTable() {
+    HashTable* newTable = (HashTable*)malloc(sizeof(HashTable));
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        newTable->table[i] = NULL;
+    }
+    return newTable;
+}
+
+// Function to compute the hash value for a given key
+int hashFunction(int key) {
+    return key % TABLE_SIZE;
+}
+
+// Function to insert a key-value pair into the hash table
+void insert(HashTable* ht, int key, int value) {
+    int index = hashFunction(key);
+
+    // Create a new key-value pair
+    KeyValue* newPair = createKeyValue(key, value);
+
+    // Insert the new pair at the beginning of the linked list
+    newPair->next = ht->table[index];
+    ht->table[index] = newPair;
+}
+
+// Function to print the contents of the hash table
+void printHashTable(HashTable* ht) {
+    printf("Hash Table:\n");
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        printf("[%d]: ", i);
+        KeyValue* current = ht->table[i];
+        while (current != NULL) {
+            printf("(%d, %d) ", current->key, current->value);
+            current = current->next;
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    // Create a hash table
+    HashTable* ht = createHashTable();
+
+    // Insert elements into the hash table
+    insert(ht, 11, 11);
+    insert(ht, 22, 22);
+    insert(ht, 33, 33);
+    insert(ht, 44, 44);
+    insert(ht, 55, 55);
+    insert(ht, 66, 66);
+    insert(ht, 77, 77);
+    insert(ht, 88, 88);
+    insert(ht, 99, 99);
+    insert(ht, 110, 110);
+
+    // Print the contents of the hash table
+    printHashTable(ht);
+
+    // Free allocated memory
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        KeyValue* current = ht->table[i];
+        while (current != NULL) {
+            KeyValue* temp = current;
+            current = current->next;
+            free(temp);
+        }
+    }
+    free(ht);
+
+    return 0;
+}
