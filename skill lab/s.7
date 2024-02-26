@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure to represent an element in the priority queue
+struct Element {
+    int data;
+    int priority;
+    struct Element* next;
+};
+
+// Structure to represent the priority queue
+struct PriorityQueue {
+    struct Element* front;
+};
+
+// Function to initialize an empty priority queue
+void initializeQueue(struct PriorityQueue* pq) {
+    pq->front = NULL;
+}
+
+// Function to insert an element into the priority queue based on priority
+void enqueue(struct PriorityQueue* pq, int data, int priority) {
+    struct Element* newElement = (struct Element*)malloc(sizeof(struct Element));
+    newElement->data = data;
+    newElement->priority = priority;
+    newElement->next = NULL;
+
+    if (pq->front == NULL || priority > pq->front->priority) {
+        newElement->next = pq->front;
+        pq->front = newElement;
+    } else {
+        struct Element* current = pq->front;
+        while (current->next != NULL && priority <= current->next->priority) {
+            current = current->next;
+        }
+        newElement->next = current->next;
+        current->next = newElement;
+    }
+}
+
+// Function to dequeue the element with the highest priority
+struct Element dequeue(struct PriorityQueue* pq) {
+    if (pq->front == NULL) {
+        // Queue is empty, return a dummy element with priority -1
+        struct Element dummy = {-1, -1, NULL};
+        return dummy;
+    }
+
+    struct Element* temp = pq->front;
+    struct Element result = {temp->data, temp->priority, NULL};
+    pq->front = pq->front->next;
+    free(temp);
+
+    return result;
+}
+
+int main() {
+    struct PriorityQueue pq;
+    initializeQueue(&pq);
+
+    enqueue(&pq, 10, 3);
+    enqueue(&pq, 20, 1);
+    enqueue(&pq, 30, 5);
+    enqueue(&pq, 40, 2);
+
+    printf("Dequeue elements in highest priority order:\n");
+    while (1) {
+        struct Element e = dequeue(&pq);
+        if (e.priority == -1) {
+            // Queue is empty
+            break;
+        }
+        printf("data=%d, priority=%d\n", e.data, e.priority);
+    }
+
+    return 0;
+}
