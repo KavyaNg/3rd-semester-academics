@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_SIZE 100
+
+// Structure to represent a stack
+struct Stack {
+    int top;
+    char items[MAX_SIZE];
+};
+
+// Function to initialize an empty stack
+void initialize(struct Stack *stack) {
+    stack->top = -1;
+}
+
+// Function to check if the stack is empty
+int isEmpty(struct Stack *stack) {
+    return stack->top == -1;
+}
+
+// Function to push an item onto the stack
+void push(struct Stack *stack, char item) {
+    if (stack->top == MAX_SIZE - 1) {
+        printf("Stack Overflow\n");
+        exit(EXIT_FAILURE);
+    }
+    stack->items[++(stack->top)] = item;
+}
+
+// Function to pop an item from the stack
+char pop(struct Stack *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack Underflow\n");
+        exit(EXIT_FAILURE);
+    }
+    return stack->items[(stack->top)--];
+}
+
+// Function to undo the last operation
+void undo(struct Stack *undoStack, struct Stack *redoStack, char buffer[]) {
+    if (!isEmpty(undoStack)) {
+        char undone = pop(undoStack);
+        push(redoStack, buffer[strlen(buffer) - 1]);
+        buffer[strlen(buffer) - 1] = '\0';
+        printf("Undo: %c\n", undone);
+    } else {
+        printf("Nothing to undo\n");
+    }
+}
+
+// Function to redo the last undone operation
+void redo(struct Stack *undoStack, struct Stack *redoStack, char buffer[]) {
+    if (!isEmpty(redoStack)) {
+        char redone = pop(redoStack);
+        push(undoStack, buffer[strlen(buffer)]);
+        buffer[strlen(buffer)] = redone;
+        printf("Redo: %c\n", redone);
+    } else {
+        printf("Nothing to redo\n");
+    }
+}
+
+// Function to perform a typing operation
+void type(struct Stack *undoStack, struct Stack *redoStack, char buffer[], char character) {
+    push(undoStack, buffer[strlen(buffer)]);
+    buffer[strlen(buffer)] = character;
+    printf("Type: %c\n", character);
+}
+
+int main() {
+    struct Stack undoStack, redoStack;
+    char buffer[MAX_SIZE];
+
+    initialize(&undoStack);
+    initialize(&redoStack);
+    buffer[0] = '\0';
+
+    char choice, character;
+    do {
+        printf("1. Type\n");
+        printf("2. Undo\n");
+        printf("3. Redo\n");
+        printf("4. Quit\n");
+        printf("Enter your choice: ");
+        scanf(" %c", &choice);
+
+        switch (choice) {
+            case '1':
+                printf("Enter a character to type: ");
+                scanf(" %c", &character);
+                type(&undoStack, &redoStack, buffer, character);
+                break;
+            case '2':
+                undo(&undoStack, &redoStack, buffer);
+                break;
+            case '3':
+                redo(&undoStack, &redoStack, buffer);
+                break;
+            case '4':
+                printf("Quitting the program.\n");
+                break;
+            default:
+                printf("Invalid choice. Please enter a valid option.\n");
+        }
+    } while (choice != '4');
+
+    return 0;
+}
