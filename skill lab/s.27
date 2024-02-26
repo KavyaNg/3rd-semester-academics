@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+
+#define PRIME 101
+
+void rabin_karp_search(char text[], char pattern[]) {
+    int text_length = strlen(text);
+    int pattern_length = strlen(pattern);
+    int pattern_hash = 0;
+    int text_hash = 0;
+    for (int i = 0; i < pattern_length; i++) {
+        pattern_hash = (pattern_hash * PRIME + pattern[i]) % PRIME;
+        text_hash = (text_hash * PRIME + text[i]) % PRIME;
+    }
+    for (int i = 0; i <= text_length - pattern_length; i++) {
+        if (pattern_hash == text_hash) {
+            // If hash values match, perform a full comparison
+            int j;
+            for (j = 0; j < pattern_length; j++) {
+                if (text[i + j] != pattern[j])
+                    break;
+            }
+
+            // If the loop completed without a break, a match is found
+            if (j == pattern_length) {
+                printf("Pattern found at index %d\n", i);
+            }
+        }
+
+        if (i < text_length - pattern_length) {
+            text_hash = (text_hash - text[i] * (PRIME^(pattern_length - 1))) % PRIME;
+            text_hash = (text_hash * PRIME + text[i + pattern_length]) % PRIME;
+            if (text_hash < 0) {
+                text_hash = (text_hash + PRIME) % PRIME;
+            }
+        }
+    }
+}
+
+int main() {
+    char text[] = "ABABDABACDABABCABAB";
+    char pattern[] = "ABABCABAB";
+
+    printf("Text: %s\n", text);
+    printf("Pattern: %s\n", pattern);
+
+    rabin_karp_search(text, pattern);
+
+    return 0;
+}
