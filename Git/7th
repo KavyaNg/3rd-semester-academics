@@ -1,0 +1,15 @@
+Commands:
+
+git checkout master
+
+git tag v1.0
+
+git tag //it will show v1.0
+
+git tag –a v1.1 -m “tag for release ver 1.1”
+
+git show v1.0
+
+git tag –l “v1.*”
+
+git push origin v1.0 //push tags to origin
