@@ -1,0 +1,32 @@
+Create folder Git cherry picking
+
+cd Git cherry picking
+
+git init
+
+vi alpha.txt
+
+git add . | git commit –m “1st commit”
+
+vi beta.txt
+
+git add . | git commit –m “2st commit”
+
+vi gamma.txt
+
+git add . | git commit –m “3st commit”
+
+git reflog 
+
+//It shows all commit history
+
+git add .
+
+git status
+
+git commit –m “all deleted”
+
+git reflog
+
+git cherry-pick id //----add commit history id eg:34946d4------
+ git log
