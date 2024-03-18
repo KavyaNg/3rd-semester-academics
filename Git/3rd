@@ -1,0 +1,23 @@
+git branch feature-branch2
+
+git status
+
+vi sample.txt
+
+git add sample.txt
+
+git checkout feature-branch2
+
+git log –oneline 
+
+git stash
+
+git stash list
+
+git stash show stash@{1}
+
+git stash apply
+
+git stash pop
+
+git stash list
