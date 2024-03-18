@@ -1,0 +1,26 @@
+mkdir foldername eg: mkdir demo
+
+ cd desktop
+
+ cd demo 
+
+ git init
+
+ git status
+
+ git add demo.txt
+
+ git commit -m “commiting text file”
+
+ git config user.name “ ” 
+
+ git config user.email “ ”
+
+ git config --global user.name “ ” //To link with git hub account ,git hub username & password
+
+ git config –global user.email “ ”
+
+Usage: git config –global user.name “[name]”
+
+Usage: git config –global user.email “[email address]”
+
