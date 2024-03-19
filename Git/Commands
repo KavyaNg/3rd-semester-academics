@@ -1,0 +1,84 @@
+1)mkdir foldername eg: mkdir demo
+
+ cd desktop
+
+ cd demo 
+
+ git init
+
+ git status
+
+ git add demo.txt
+
+ git commit -m “commiting text file”
+
+ git config user.name “ ” 
+
+ git config user.email “ ”
+
+ git config --global user.name “ ” //To link with git hub account ,git hub username & password
+
+ git config –global user.email “ ”
+
+Usage: git config –global user.name “[name]”
+
+Usage: git config –global user.email “[email address]”
+
+
+
+2)git branch feature-branch //This will create new branch called feature-branch
+
+git checkout feature-branch 
+git checkout master
+git merge feature-branch
+git status //it will check the status
+
+git push origin master
+
+3) git branch feature-branch2
+
+git status
+
+vi sample.txt
+
+git add sample.txt
+
+git checkout feature-branch2
+
+git log –oneline 
+
+git stash
+
+git stash list
+
+git stash show stash@{1}
+
+git stash apply
+
+git stash pop
+
+git stash list
+
+
+4) 
+git clone <repository-url>
+
+
+5) git fetch origin 
+
+git checkout feature-branch 
+
+git rebase master/origin feature-branch(Resolve any conflicts if prompted) 
+
+git add <resolved-file> (Stage each resolved file) git rebase –continue (Repeat steps 4-5 if necessary) 
+
+git push -f origin feature-branch (Force push the updated branch to the remote repository)
+6)  git commit –m “custom commit message”
+
+10)git log --author="shamsiya parveen " --after="2023-01-01" --before="2023-12-31"
+
+12) Git revert “abc123”
+
+Git log –oneline // it shows commit history in oneline
+
+Git reset –hard head.1
